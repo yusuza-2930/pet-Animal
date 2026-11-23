@@ -6,7 +6,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, BadgeCheck, Headset, RotateCcw, Truck } from "lucide-react";
 import { PawIcon } from "@/components/ui/Logo";
-import { Magnetic } from "@/components/motion/Motion";
 
 const VIDEO_SRC = "https://vibology-ai.github.io/vibology-video-media/Dogs_catching.mp4";
 const POSTER_SRC = "/images/hero-video-poster.jpg";
@@ -102,21 +101,29 @@ export function Hero() {
     rafId = requestAnimationFrame(renderLoop);
 
     const ctx = gsap.context(() => {
-      // Content entrance animation
+      // Content entrance animation using gsap.from to guarantee immediate visibility
       const items = stage.querySelectorAll("[data-hero-item]");
       const card = stage.querySelector("[data-hero-card]");
-      gsap.set(items, { autoAlpha: 0, y: 24 });
-      if (card) gsap.set(card, { autoAlpha: 0, y: 20 });
-
-      const tl = gsap.timeline({
-        defaults: { ease: "power3.out" },
-        onComplete: () => {
-          gsap.set(items, { clearProps: "transform,opacity,visibility" });
-          if (card) gsap.set(card, { clearProps: "transform,opacity,visibility" });
-        },
-      });
-      tl.to(items, { autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.08 }, 0.15)
-        .to(card, { autoAlpha: 1, y: 0, duration: 0.7 }, 0.45);
+      if (items.length) {
+        gsap.from(items, {
+          autoAlpha: 0,
+          y: 20,
+          duration: 0.65,
+          stagger: 0.08,
+          ease: "power3.out",
+          clearProps: "all",
+        });
+      }
+      if (card) {
+        gsap.from(card, {
+          autoAlpha: 0,
+          y: 18,
+          duration: 0.65,
+          delay: 0.25,
+          ease: "power3.out",
+          clearProps: "all",
+        });
+      }
 
       // Pin and scrub configuration
       const isMobile = window.innerWidth < 1024;
@@ -236,68 +243,52 @@ export function Hero() {
               New season essentials · Up to 25% off
             </p>
 
-            {/* Main Headline (3 Lines with curved coral underline under 'Feel Loved.') */}
+            {/* Main Headline (2 lines on mobile, 3 lines on desktop) */}
             <h1
               id="hero-title"
               data-hero-item
-              className="mt-3 sm:mt-5 font-display text-[clamp(1.75rem,1.1rem+2.6vw,3.8rem)] font-extrabold leading-[1.08] tracking-[-0.03em] text-white drop-shadow-sm"
+              className="mt-2.5 sm:mt-5 font-display text-[clamp(1.4rem,0.95rem+2.2vw,2.3rem)] lg:text-[clamp(2.4rem,1.8rem+3.6vw,4.6rem)] font-extrabold leading-[1.14] lg:leading-[1.06] tracking-[-0.03em] text-white drop-shadow-sm"
             >
               <span className="block whitespace-nowrap">Everything Your Pet</span>
-              <span className="block">Needs to</span>
-              <span className="relative inline-block text-coral">
-                Feel Loved.
-                <svg
-                  viewBox="0 0 240 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="pointer-events-none absolute -bottom-2.5 left-0 w-full overflow-visible text-coral"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M 3 14 C 60 5, 180 5, 238 11"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                  />
-                </svg>
+              <span className="lg:block whitespace-nowrap">
+                <span className="inline lg:block">Needs to </span>
+                <span className="relative inline-block text-coral">
+                  Feel Loved.
+                  <svg
+                    viewBox="0 0 240 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="pointer-events-none absolute -bottom-2.5 left-0 w-full overflow-visible text-coral"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M 3 14 C 60 5, 180 5, 238 11"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
               </span>
             </h1>
-
-            {/* Mobile-only CTA Buttons directly below headline */}
-            <div data-hero-item className="mt-4 flex flex-wrap gap-2.5 xl:hidden">
-              <Link
-                href="/shop?sort=popularity"
-                className="btn-coral min-h-10 px-4.5 rounded-full text-[13px] font-semibold shadow-lift active:scale-95 transition-all duration-200"
-              >
-                Shop Bestsellers <ArrowRight className="size-3.5" aria-hidden />
-              </Link>
-              <Link
-                href="#collections"
-                className="btn min-h-10 rounded-full border border-white/40 bg-white/20 px-4.5 text-[13px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-slate active:scale-95 shadow-soft"
-              >
-                Explore Collections
-              </Link>
-            </div>
           </div>
         </div>
 
-        {/* Centered CTA Buttons directly beneath the dog visual on Desktop (Layer 20) */}
+        {/* Centered CTA Buttons directly beneath the dog visual (Layer 20 - Desktop and Mobile) */}
         <div
           data-hero-item
-          className="pointer-events-none absolute inset-x-0 bottom-14 sm:bottom-18 z-20 hidden justify-center px-4 xl:flex"
+          className="pointer-events-none absolute inset-x-0 bottom-14 sm:bottom-18 z-20 flex justify-center px-2.5 sm:px-4"
         >
-          <div className="pointer-events-auto flex flex-row items-center justify-center gap-3.5">
-            <Magnetic>
-              <Link
-                href="/shop?sort=popularity"
-                className="btn-coral min-h-12 px-6 sm:px-7 rounded-full text-[14.5px] font-semibold shadow-lift active:scale-95 transition-all duration-200"
-              >
-                Shop Bestsellers <ArrowRight className="size-4" aria-hidden />
-              </Link>
-            </Magnetic>
+          <div className="pointer-events-auto flex w-full max-w-[310px] sm:max-w-none flex-row items-center justify-center gap-2 sm:gap-3.5">
+            <Link
+              href="/shop?sort=popularity"
+              className="btn-coral flex-1 sm:flex-initial min-h-9.5 sm:min-h-12 !px-2.5 sm:!px-7 rounded-full text-[11px] sm:text-[14.5px] font-semibold shadow-lift active:scale-95 transition-all duration-200 justify-center whitespace-nowrap"
+            >
+              Shop Bestsellers <ArrowRight className="size-3 sm:size-4" aria-hidden />
+            </Link>
             <Link
               href="#collections"
-              className="btn min-h-12 rounded-full border border-white/40 bg-white/20 px-6 sm:px-7 text-[14.5px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-slate active:scale-95 shadow-soft"
+              className="btn flex-1 sm:flex-initial min-h-9.5 sm:min-h-12 rounded-full border border-white/40 bg-white/20 !px-2.5 sm:!px-7 text-[11px] sm:text-[14.5px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-slate active:scale-95 shadow-soft justify-center whitespace-nowrap"
             >
               Explore Collections
             </Link>
@@ -326,24 +317,20 @@ export function Hero() {
           </ul>
         </div>
 
-        {/* Mobile / Tablet Benefit Strip (Layer 20 - Bottom Bar) */}
-        <div className="relative z-20 w-full px-4 pb-4 sm:px-6 xl:hidden">
-          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {/* Mobile / Tablet Benefit Strip: Single sleek horizontal icon-only row (Layer 20) */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-3.5 z-20 flex justify-center px-4 xl:hidden">
+          <div className="flex items-center justify-center gap-6 sm:gap-8">
             {benefits.map((b) => (
-              <li
+              <div
                 key={b.title}
-                className="flex items-center gap-2 rounded-xl border border-white/15 bg-slate-900/80 p-2.5 text-white backdrop-blur-md"
+                className="grid size-9 sm:size-10 place-items-center rounded-full border border-white/20 bg-slate-900/50 text-white/90 shadow-sm backdrop-blur-md"
+                title={`${b.title}: ${b.text}`}
+                aria-label={b.title}
               >
-                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-white/15 text-white">
-                  <b.icon className="size-3.5" aria-hidden />
-                </span>
-                <span className="min-w-0">
-                  <span className="block truncate text-[12px] font-bold text-white">{b.title}</span>
-                  <span className="block truncate text-[10.5px] text-white/70">{b.text}</span>
-                </span>
-              </li>
+                <b.icon className="size-4 sm:size-4.5" aria-hidden="true" />
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </section>
