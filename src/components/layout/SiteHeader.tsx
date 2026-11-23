@@ -100,8 +100,8 @@ export function SiteHeader() {
         className={`sticky top-0 z-40 transition-all duration-300 ${
           isHome
             ? scrolled
-              ? "rounded-b-[24px] border-b border-x border-slate-900/10 bg-white/85 shadow-soft backdrop-blur-2xl"
-              : "rounded-b-[24px] border-b border-x border-white/35 bg-white/20 shadow-sm backdrop-blur-xl"
+              ? "border-b border-slate-900/10 bg-white/90 shadow-soft backdrop-blur-xl"
+              : "border-b border-white/20 bg-white/75 shadow-sm backdrop-blur-xl"
             : scrolled
               ? "border-b border-slate-900/10 bg-white/92 shadow-soft backdrop-blur-xl"
               : "border-b border-line/60 bg-white"

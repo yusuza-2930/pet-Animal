@@ -4,8 +4,8 @@
  * placeholders here — every component reads from this file.
  */
 export const siteConfig = {
-  name: "Vibology",
-  shortName: "Vibology",
+  name: "Sneak Connect Pets",
+  shortName: "Sneak Connect",
   tagline: "Premium pet care, thoughtfully selected",
   description:
     "Thoughtfully selected food, toys, accessories and everyday essentials for happier, healthier pets.",

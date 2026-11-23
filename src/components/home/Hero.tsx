@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, BadgeCheck, Headset, RotateCcw, Truck } from "lucide-react";
 import { PawIcon } from "@/components/ui/Logo";
 import { Magnetic } from "@/components/motion/Motion";
+import { SearchAutocomplete } from "@/components/layout/SearchAutocomplete";
 
 const VIDEO_SRC = "https://vibology-ai.github.io/vibology-video-media/Dogs_catching.mp4";
 const POSTER_SRC = "/images/hero-video-poster.jpg";
@@ -17,6 +18,13 @@ const benefits = [
   { icon: Truck, title: "Fast delivery", text: "Dispatched within 48 hours" },
   { icon: RotateCcw, title: "Easy returns", text: "14 days on unused items" },
   { icon: Headset, title: "Friendly support", text: "Real people, real help" },
+];
+
+const chips = [
+  { label: "Dog food", href: "/shop?q=dog+food" },
+  { label: "Cat toys", href: "/shop?animal=cat&category=toys,cat-essentials" },
+  { label: "Grooming", href: "/category/grooming" },
+  { label: "Beds", href: "/shop?q=bed" },
 ];
 
 function formatTime(seconds: number): string {
@@ -48,6 +56,15 @@ export function Hero() {
     let st: ScrollTrigger | null = null;
     let currentDur = DEFAULT_DURATION;
 
+    // Single unified helper to seek video safely without duplicate try/catch blocks
+    const seekVideo = (time: number) => {
+      if (video && !video.seeking) {
+        try {
+          video.currentTime = time;
+        } catch { }
+      }
+    };
+
     // Synchronize video duration and prime first frame
     const handleVideoReady = () => {
       if (video.duration && !isNaN(video.duration) && video.duration > 0) {
@@ -55,11 +72,9 @@ export function Hero() {
         setDuration(video.duration);
       }
       setIsReady(true);
-      // Nudge currentTime slightly so browser decodes and paints frame 0 over poster immediately
+      // Prime first frame smoothly over poster
       if (video.currentTime === 0 && targetTime === 0) {
-        try {
-          video.currentTime = 0.001;
-        } catch { }
+        seekVideo(0.001);
       }
       ScrollTrigger.refresh();
     };
@@ -77,7 +92,7 @@ export function Hero() {
 
     // Video error fallback
     const handleVideoError = () => {
-      console.warn("Video failed to load, falling back to static poster.");
+      console.warn("Hero video failed to load, falling back to static poster.");
       setIsReady(true);
     };
     video.addEventListener("error", handleVideoError, { once: true });
@@ -86,10 +101,8 @@ export function Hero() {
     const renderLoop = () => {
       if (video && video.readyState >= 1) {
         const diff = Math.abs(video.currentTime - targetTime);
-        if (diff > 0.02 && !video.seeking) {
-          try {
-            video.currentTime = targetTime;
-          } catch { }
+        if (diff > 0.02) {
+          seekVideo(targetTime);
         }
       }
       rafId = requestAnimationFrame(renderLoop);
@@ -135,15 +148,11 @@ export function Hero() {
         onLeave: () => {
           const dur = video.duration && !isNaN(video.duration) && video.duration > 0 ? video.duration : currentDur;
           targetTime = Math.max(0, dur - 0.001);
-          if (video && !video.seeking) {
-            try { video.currentTime = targetTime; } catch { }
-          }
+          seekVideo(targetTime);
         },
         onLeaveBack: () => {
           targetTime = 0.001;
-          if (video && !video.seeking) {
-            try { video.currentTime = 0.001; } catch { }
-          }
+          seekVideo(0.001);
         },
       });
     }, container);
@@ -214,7 +223,7 @@ export function Hero() {
         </div>
 
         {/* Cinematic Readability Gradients & Vignettes (Layer 10) */}
-        {/* Left scrim gradient for high text contrast without obscuring dogs on right */}
+        {/* Left scrim gradient for text readability without obscuring dogs on right */}
         <div
           className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-slate-950/85 via-slate-950/50 to-transparent sm:w-4/5 lg:w-3/5"
           aria-hidden
@@ -254,9 +263,9 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Main Foreground Content: Left-Aligned Headline matching Image 2 (Layer 20) */}
-        <div className="container-site relative z-20 flex flex-1 flex-col justify-start pt-4 sm:pt-8 lg:justify-center lg:pt-8 pb-24 lg:pb-28">
-          <div className="max-w-xl lg:max-w-2xl">
+        {/* Main Foreground Content: Left-Aligned Content matching Sneak Connect Pets design (Layer 20) */}
+        <div className="container-site relative z-20 flex flex-1 flex-col justify-center pt-20 pb-8 sm:pt-24 sm:pb-12 lg:pt-20">
+          <div className="max-w-2xl">
             {/* Eyebrow Badge */}
             <p
               data-hero-item
@@ -270,49 +279,55 @@ export function Hero() {
             <h1
               id="hero-title"
               data-hero-item
-              className="mt-3.5 sm:mt-5 font-display text-[clamp(2rem,1.2rem+2.6vw,3.6rem)] font-extrabold leading-[1.08] tracking-[-0.025em] text-white drop-shadow-sm"
+              className="mt-4 sm:mt-5 font-display text-[clamp(2.2rem,1.4rem+3.4vw,4.2rem)] font-extrabold leading-[1.04] tracking-[-0.025em] text-white drop-shadow-sm"
             >
-              <span className="block whitespace-nowrap">Everything Your Pet</span>
-              <span className="block">Needs to</span>
-              <span className="relative inline-block text-coral">
-                Feel Loved.
-                {/* Decorative curved underline swoosh matching Image 2 */}
-                <svg
-                  className="absolute -bottom-2 left-0 w-full text-coral overflow-visible pointer-events-none"
-                  viewBox="0 0 240 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden
-                >
-                  <path
-                    d="M3 13 C 65 3, 175 3, 237 11"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
+              Everything Your Pet Needs to <span className="text-coral">Feel Loved.</span>
             </h1>
-          </div>
-        </div>
 
-        {/* CTA Buttons: Centered Directly Beneath the Dog matching Image 2 (Layer 20) */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-36 sm:bottom-24 lg:bottom-24 z-20 flex justify-center px-4">
-          <div data-hero-item className="pointer-events-auto flex flex-row items-center justify-center gap-3 sm:gap-4">
-            <Magnetic>
-              <Link
-                href="/shop?sort=popularity"
-                className="btn-coral min-h-12 px-6 sm:px-8 sm:min-h-13 text-[14px] sm:text-[15px] font-semibold shadow-lift active:scale-95 transition-all duration-200 whitespace-nowrap"
-              >
-                Shop Bestsellers <ArrowRight className="size-4" aria-hidden />
-              </Link>
-            </Magnetic>
-            <Link
-              href="#collections"
-              className="btn min-h-12 border border-white/40 bg-white/15 px-6 sm:px-8 sm:min-h-13 text-[14px] sm:text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-slate active:scale-95 shadow-soft whitespace-nowrap"
+            {/* Subheading / Description */}
+            <p
+              data-hero-item
+              className="mt-4 max-w-lg text-[15px] leading-relaxed text-white/85 drop-shadow-sm sm:text-[17px]"
             >
-              Explore Collections
-            </Link>
+              Thoughtfully selected food, toys, accessories, and everyday essentials for happier, healthier pets.
+            </p>
+
+            {/* Action Buttons */}
+            <div data-hero-item className="mt-6 flex flex-wrap gap-3">
+              <Magnetic>
+                <Link
+                  href="/shop?sort=popularity"
+                  className="btn-coral min-h-12 sm:min-h-13 px-6 sm:px-7 text-[14px] sm:text-[15px] font-semibold shadow-lift active:scale-95 transition-all duration-200"
+                >
+                  Shop Bestsellers <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              </Magnetic>
+              <Link
+                href="#collections"
+                className="btn min-h-12 sm:min-h-13 border border-white/25 bg-white/15 px-6 sm:px-7 text-[14px] sm:text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-slate active:scale-95 shadow-soft"
+              >
+                Explore Collections
+              </Link>
+            </div>
+
+            {/* Live Autocomplete Search Input */}
+            <div data-hero-item className="mt-6 max-w-lg">
+              <SearchAutocomplete variant="hero" label="Search the store" />
+            </div>
+
+            {/* Popular Category Chips */}
+            <div data-hero-item className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="text-[12px] font-semibold text-white/80">Popular:</span>
+              {chips.map((c) => (
+                <Link
+                  key={c.label}
+                  href={c.href}
+                  className="chip min-h-8 border-white/20 bg-white/15 text-[12px] text-white backdrop-blur-sm transition-colors hover:border-white hover:bg-white hover:text-slate"
+                >
+                  {c.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -356,6 +371,22 @@ export function Hero() {
               </li>
             ))}
           </ul>
+        </div>
+
+        {/* Scroll To Control Video Hint (Layer 20 - Fades out near end of scrub) */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-4 z-20 hidden justify-center transition-opacity duration-300 xl:flex"
+          style={{ opacity: progress > 0.88 ? 0 : 1 }}
+          aria-hidden
+        >
+          <div className="flex flex-col items-center gap-1.5 animate-bounce">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white/70 uppercase drop-shadow-sm">
+              Scroll to play video
+            </span>
+            <span className="flex h-7 w-4 justify-center rounded-full border border-white/50 pt-1 shadow-sm backdrop-blur-xs">
+              <span className="size-1 animate-scroll-dot rounded-full bg-coral" />
+            </span>
+          </div>
         </div>
       </div>
     </section>
