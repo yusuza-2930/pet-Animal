@@ -97,23 +97,38 @@ export function SiteHeader() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 transition-all duration-300 ${
+        className={
           isHome
-            ? scrolled
-              ? "border-b border-slate-900/10 bg-white/90 shadow-soft backdrop-blur-xl"
-              : "border-b border-white/20 bg-white/75 shadow-sm backdrop-blur-xl"
-            : scrolled
-              ? "border-b border-slate-900/10 bg-white/92 shadow-soft backdrop-blur-xl"
-              : "border-b border-line/60 bg-white"
-        }`}
+            ? "fixed top-0 inset-x-0 z-40 px-3 pt-3 transition-all duration-300 sm:px-6 sm:pt-4 lg:px-8"
+            : `sticky top-0 z-40 transition-all duration-300 ${
+                scrolled
+                  ? "border-b border-slate-900/10 bg-white/92 shadow-soft backdrop-blur-xl"
+                  : "border-b border-line/60 bg-white"
+              }`
+        }
       >
-        <div className="container-site flex h-[68px] items-center gap-3 lg:h-[76px] lg:gap-8">
-          <button type="button" onClick={() => setMenu(true)} className="-ml-2 grid size-11 place-items-center rounded-full text-slate hover:bg-white/20 lg:hidden" aria-label="Open menu">
+        <div
+          className={
+            isHome
+              ? `mx-auto flex h-14 sm:h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:gap-8 rounded-2xl transition-all duration-300 ${
+                  scrolled
+                    ? "border border-slate-900/10 bg-white/90 shadow-soft backdrop-blur-xl"
+                    : "border border-white/35 bg-white/25 shadow-sm backdrop-blur-xl"
+                }`
+              : "container-site flex h-[68px] items-center gap-3 lg:h-[76px] lg:gap-8"
+          }
+        >
+          <button
+            type="button"
+            onClick={() => setMenu(true)}
+            className="-ml-2 grid size-11 place-items-center rounded-full text-slate hover:bg-white/20 lg:hidden"
+            aria-label="Open menu"
+          >
             <Menu className="size-[22px]" />
           </button>
           <Logo />
           <div className="mx-auto hidden w-full max-w-xl lg:block">
-            <SearchAutocomplete />
+            <SearchAutocomplete variant="header" />
           </div>
           <div className="ml-auto flex items-center gap-0.5 lg:ml-0">
             <IconLink label="Search" icon={<Search className="size-[21px]" />} onClick={() => setSearch(true)} />

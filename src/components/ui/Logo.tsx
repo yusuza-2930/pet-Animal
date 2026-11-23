@@ -15,19 +15,13 @@ export function PawIcon({ className = "", title, ...rest }: { className?: string
 }
 
 export function Logo({ className = "" }: { className?: string }) {
-  const [first, ...rest] = siteConfig.name.split(" ");
   return (
     <Link href="/" className={`group inline-flex items-center gap-2.5 ${className}`} aria-label={`${siteConfig.name} — home`}>
       <span className="grid size-10 place-items-center rounded-2xl bg-coral text-white shadow-soft transition-transform duration-300 group-hover:-rotate-6">
         <PawIcon className="size-6" />
       </span>
-      <span className="flex flex-col leading-none">
-        <span className="flex gap-[0.28em] font-display text-[17px] font-extrabold tracking-tight text-slate">
-          {[first, ...rest.slice(0, -1)].map((w) => <span key={w}>{w}</span>)}
-        </span>
-        <span className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.28em] text-coral">
-          {rest.slice(-1)[0]}
-        </span>
+      <span className="font-display text-[21px] font-extrabold tracking-tight text-slate">
+        {siteConfig.name}
       </span>
     </Link>
   );

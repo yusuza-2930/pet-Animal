@@ -7,7 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, BadgeCheck, Headset, RotateCcw, Truck } from "lucide-react";
 import { PawIcon } from "@/components/ui/Logo";
 import { Magnetic } from "@/components/motion/Motion";
-import { SearchAutocomplete } from "@/components/layout/SearchAutocomplete";
 
 const VIDEO_SRC = "https://vibology-ai.github.io/vibology-video-media/Dogs_catching.mp4";
 const POSTER_SRC = "/images/hero-video-poster.jpg";
@@ -18,13 +17,6 @@ const benefits = [
   { icon: Truck, title: "Fast delivery", text: "Dispatched within 48 hours" },
   { icon: RotateCcw, title: "Easy returns", text: "14 days on unused items" },
   { icon: Headset, title: "Friendly support", text: "Real people, real help" },
-];
-
-const chips = [
-  { label: "Dog food", href: "/shop?q=dog+food" },
-  { label: "Cat toys", href: "/shop?animal=cat&category=toys,cat-essentials" },
-  { label: "Grooming", href: "/category/grooming" },
-  { label: "Beds", href: "/shop?q=bed" },
 ];
 
 function formatTime(seconds: number): string {
@@ -201,7 +193,7 @@ export function Hero() {
     <section
       ref={containerRef}
       aria-labelledby="hero-title"
-      className="relative w-full overflow-hidden bg-slate-950 isolate"
+      className="relative w-full overflow-hidden bg-[#0B7FC7] isolate"
     >
       {/* Pinned Viewport Stage */}
       <div
@@ -218,134 +210,115 @@ export function Hero() {
             muted
             preload="auto"
             className="h-full w-full object-cover object-[center_35%] lg:object-center pointer-events-none"
-            aria-label="Cinematic slow-motion video of dogs playfully catching treats"
+            aria-label="Cinematic video of dogs playfully catching treats"
           />
         </div>
 
-        {/* Cinematic Readability Gradients & Vignettes (Layer 10) */}
-        {/* Left scrim gradient for text readability without obscuring dogs on right */}
+        {/* Soft contrast gradient on the left for headline legibility without darkening the sky (Layer 10) */}
         <div
-          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-slate-950/85 via-slate-950/50 to-transparent sm:w-4/5 lg:w-3/5"
-          aria-hidden
-        />
-        {/* Top bar vignette */}
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-32 bg-gradient-to-b from-slate-950/70 via-slate-950/20 to-transparent"
-          aria-hidden
-        />
-        {/* Bottom vignette */}
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-36 bg-gradient-to-t from-slate-950/80 via-slate-950/30 to-transparent"
+          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-sky-950/40 via-sky-950/15 to-transparent sm:w-3/5"
           aria-hidden
         />
 
         {/* Decorative Floating Paws (Layer 10) */}
-        <PawIcon className="pointer-events-none absolute top-12 left-[52%] z-10 size-14 text-white/20" data-paw="10" data-rot="-14" />
-        <PawIcon className="pointer-events-none absolute bottom-24 left-8 z-10 size-20 text-white/15" data-paw="16" data-rot="18" />
-        <PawIcon className="pointer-events-none absolute top-1/4 right-8 z-10 hidden size-12 text-white/20 lg:block" data-paw="8" data-rot="22" />
+        <PawIcon className="pointer-events-none absolute bottom-16 left-8 z-10 size-16 text-white/20" data-paw="12" data-rot="18" />
+        <PawIcon className="pointer-events-none absolute top-36 right-10 z-10 hidden size-14 text-white/20 lg:block" data-paw="8" data-rot="22" />
 
-        {/* Top-Right Cinematic Scrub HUD (Layer 30) */}
-        <div className="absolute top-4 right-4 z-30 flex items-center gap-2 sm:top-6 sm:right-8">
-          <div className="flex items-center gap-2.5 rounded-full border border-white/20 bg-slate-900/75 px-3.5 py-1.5 text-[11px] font-semibold text-white/90 shadow-soft backdrop-blur-md">
-            <span className="size-2 rounded-full bg-coral animate-pulse" aria-hidden />
-            <span className="hidden sm:inline font-mono text-white/80">
-              {formatTime(progress * duration)} / {formatTime(duration)}
-            </span>
-            <div className="h-1.5 w-14 overflow-hidden rounded-full bg-white/20 sm:w-20" aria-hidden>
-              <div
-                className="h-full bg-coral transition-[width] duration-75"
-                style={{ width: `${Math.round(progress * 100)}%` }}
-              />
-            </div>
-            <span className="font-mono text-[10.5px] text-white/70">
-              {Math.round(progress * 100)}%
-            </span>
-          </div>
-        </div>
-
-        {/* Main Foreground Content: Left-Aligned Content matching Sneak Connect Pets design (Layer 20) */}
-        <div className="container-site relative z-20 flex flex-1 flex-col justify-center pt-20 pb-8 sm:pt-24 sm:pb-12 lg:pt-20">
-          <div className="max-w-2xl">
+        {/* Main Foreground Content: Left-Aligned Headline matching Image 2 (Layer 20) */}
+        <div className="container-site relative z-20 flex flex-1 flex-col justify-start pt-20 sm:pt-24 lg:justify-center lg:pt-20">
+          <div className="max-w-md lg:max-w-lg">
             {/* Eyebrow Badge */}
             <p
               data-hero-item
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md"
+              className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[10.5px] sm:text-[11px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md"
             >
               <span className="size-1.5 rounded-full bg-coral animate-pulse" aria-hidden />
               New season essentials · Up to 25% off
             </p>
 
-            {/* Main Headline */}
+            {/* Main Headline (3 Lines with curved coral underline under 'Feel Loved.') */}
             <h1
               id="hero-title"
               data-hero-item
-              className="mt-4 sm:mt-5 font-display text-[clamp(2.2rem,1.4rem+3.4vw,4.2rem)] font-extrabold leading-[1.04] tracking-[-0.025em] text-white drop-shadow-sm"
+              className="mt-3 sm:mt-5 font-display text-[clamp(1.75rem,1.1rem+2.6vw,3.8rem)] font-extrabold leading-[1.08] tracking-[-0.03em] text-white drop-shadow-sm"
             >
-              Everything Your Pet Needs to <span className="text-coral">Feel Loved.</span>
+              <span className="block whitespace-nowrap">Everything Your Pet</span>
+              <span className="block">Needs to</span>
+              <span className="relative inline-block text-coral">
+                Feel Loved.
+                <svg
+                  viewBox="0 0 240 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="pointer-events-none absolute -bottom-2.5 left-0 w-full overflow-visible text-coral"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M 3 14 C 60 5, 180 5, 238 11"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
             </h1>
 
-            {/* Subheading / Description */}
-            <p
-              data-hero-item
-              className="mt-4 max-w-lg text-[15px] leading-relaxed text-white/85 drop-shadow-sm sm:text-[17px]"
-            >
-              Thoughtfully selected food, toys, accessories, and everyday essentials for happier, healthier pets.
-            </p>
-
-            {/* Action Buttons */}
-            <div data-hero-item className="mt-6 flex flex-wrap gap-3">
-              <Magnetic>
-                <Link
-                  href="/shop?sort=popularity"
-                  className="btn-coral min-h-12 sm:min-h-13 px-6 sm:px-7 text-[14px] sm:text-[15px] font-semibold shadow-lift active:scale-95 transition-all duration-200"
-                >
-                  Shop Bestsellers <ArrowRight className="size-4" aria-hidden />
-                </Link>
-              </Magnetic>
+            {/* Mobile-only CTA Buttons directly below headline */}
+            <div data-hero-item className="mt-4 flex flex-wrap gap-2.5 xl:hidden">
+              <Link
+                href="/shop?sort=popularity"
+                className="btn-coral min-h-10 px-4.5 rounded-full text-[13px] font-semibold shadow-lift active:scale-95 transition-all duration-200"
+              >
+                Shop Bestsellers <ArrowRight className="size-3.5" aria-hidden />
+              </Link>
               <Link
                 href="#collections"
-                className="btn min-h-12 sm:min-h-13 border border-white/25 bg-white/15 px-6 sm:px-7 text-[14px] sm:text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-slate active:scale-95 shadow-soft"
+                className="btn min-h-10 rounded-full border border-white/40 bg-white/20 px-4.5 text-[13px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-slate active:scale-95 shadow-soft"
               >
                 Explore Collections
               </Link>
             </div>
-
-            {/* Live Autocomplete Search Input */}
-            <div data-hero-item className="mt-6 max-w-lg">
-              <SearchAutocomplete variant="hero" label="Search the store" />
-            </div>
-
-            {/* Popular Category Chips */}
-            <div data-hero-item className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-[12px] font-semibold text-white/80">Popular:</span>
-              {chips.map((c) => (
-                <Link
-                  key={c.label}
-                  href={c.href}
-                  className="chip min-h-8 border-white/20 bg-white/15 text-[12px] text-white backdrop-blur-sm transition-colors hover:border-white hover:bg-white hover:text-slate"
-                >
-                  {c.label}
-                </Link>
-              ))}
-            </div>
           </div>
         </div>
 
-        {/* Floating Glass Promise Card (Layer 20 - Desktop Bottom Right) */}
+        {/* Centered CTA Buttons directly beneath the dog visual on Desktop (Layer 20) */}
+        <div
+          data-hero-item
+          className="pointer-events-none absolute inset-x-0 bottom-14 sm:bottom-18 z-20 hidden justify-center px-4 xl:flex"
+        >
+          <div className="pointer-events-auto flex flex-row items-center justify-center gap-3.5">
+            <Magnetic>
+              <Link
+                href="/shop?sort=popularity"
+                className="btn-coral min-h-12 px-6 sm:px-7 rounded-full text-[14.5px] font-semibold shadow-lift active:scale-95 transition-all duration-200"
+              >
+                Shop Bestsellers <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </Magnetic>
+            <Link
+              href="#collections"
+              className="btn min-h-12 rounded-full border border-white/40 bg-white/20 px-6 sm:px-7 text-[14.5px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-slate active:scale-95 shadow-soft"
+            >
+              Explore Collections
+            </Link>
+          </div>
+        </div>
+
+        {/* Floating Glass Promise Card (Layer 20 - Desktop Bottom Right, nested over the corner) */}
         <div
           data-hero-card
-          className="absolute right-8 bottom-10 z-20 hidden w-[310px] rounded-[22px] border border-white/20 bg-slate-900/85 p-4 text-white shadow-lift backdrop-blur-xl xl:block"
+          className="absolute right-6 bottom-6 z-20 hidden w-[300px] rounded-[20px] border border-white/10 bg-[#1E232A] p-4 text-white shadow-lift xl:block"
         >
-          <p className="mb-2.5 text-[11px] font-bold tracking-[0.14em] text-white/70 uppercase">
+          <p className="mb-2.5 text-[10.5px] font-bold tracking-[0.14em] text-white/70 uppercase">
             The Sneak Connect promise
           </p>
           <ul className="grid grid-cols-2 gap-3">
             {benefits.map((b) => (
-              <li key={b.title} className="flex items-start gap-2">
-                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-white/15 text-white">
-                  <b.icon className="size-3.5" aria-hidden />
+              <li key={b.title} className="flex items-center gap-2">
+                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-white/10 text-white">
+                  <b.icon className="size-3" aria-hidden />
                 </span>
-                <span className="text-[11.5px] leading-tight font-semibold text-white/95">
+                <span className="text-[11px] leading-tight font-medium text-white/95">
                   {b.title}
                 </span>
               </li>
@@ -371,22 +344,6 @@ export function Hero() {
               </li>
             ))}
           </ul>
-        </div>
-
-        {/* Scroll To Control Video Hint (Layer 20 - Fades out near end of scrub) */}
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-4 z-20 hidden justify-center transition-opacity duration-300 xl:flex"
-          style={{ opacity: progress > 0.88 ? 0 : 1 }}
-          aria-hidden
-        >
-          <div className="flex flex-col items-center gap-1.5 animate-bounce">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white/70 uppercase drop-shadow-sm">
-              Scroll to play video
-            </span>
-            <span className="flex h-7 w-4 justify-center rounded-full border border-white/50 pt-1 shadow-sm backdrop-blur-xs">
-              <span className="size-1 animate-scroll-dot rounded-full bg-coral" />
-            </span>
-          </div>
         </div>
       </div>
     </section>

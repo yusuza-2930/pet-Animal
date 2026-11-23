@@ -42,7 +42,7 @@ export function SearchAutocomplete({ variant = "header", autoFocus, onNavigate, 
   };
 
   const styles = {
-    header: "h-11 bg-pale/80 border-slate-200/60 focus-within:bg-white focus-within:border-slate/30 text-slate-800 shadow-inner/5",
+    header: "h-11 bg-white/35 border-white/40 focus-within:bg-white/95 focus-within:border-slate/30 text-slate-800 shadow-sm backdrop-blur-md",
     hero: "h-14 bg-white border-white shadow-soft focus-within:border-slate/30",
     sheet: "h-12 bg-pale border-transparent focus-within:bg-white focus-within:border-slate/30",
   }[variant];
