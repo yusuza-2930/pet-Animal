@@ -29,23 +29,41 @@ export function getDb() {
 }
 
 export const db = new Proxy({} as ReturnType<typeof getDb>, {
-  get(_target, prop, receiver) {
+  get(_target, prop) {
     const realDb = getDb();
-    const value = Reflect.get(realDb, prop, receiver);
+    const value = Reflect.get(realDb, prop, realDb);
     if (typeof value === "function") {
       return value.bind(realDb);
     }
     return value;
   },
+  has(_target, prop) {
+    return Reflect.has(getDb(), prop);
+  },
+  ownKeys(_target) {
+    return Reflect.ownKeys(getDb());
+  },
+  getOwnPropertyDescriptor(_target, prop) {
+    return Reflect.getOwnPropertyDescriptor(getDb(), prop);
+  },
 });
 
 export const pool = new Proxy({} as Pool, {
-  get(_target, prop, receiver) {
+  get(_target, prop) {
     const realPool = getPool();
-    const value = Reflect.get(realPool, prop, receiver);
+    const value = Reflect.get(realPool, prop, realPool);
     if (typeof value === "function") {
       return value.bind(realPool);
     }
     return value;
+  },
+  has(_target, prop) {
+    return Reflect.has(getPool(), prop);
+  },
+  ownKeys(_target) {
+    return Reflect.ownKeys(getPool());
+  },
+  getOwnPropertyDescriptor(_target, prop) {
+    return Reflect.getOwnPropertyDescriptor(getPool(), prop);
   },
 });
