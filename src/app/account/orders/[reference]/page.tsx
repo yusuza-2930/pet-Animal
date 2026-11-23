@@ -7,6 +7,8 @@ import { requireUser } from "@/lib/server/auth";
 import { OrderDetails } from "@/components/order/OrderDetails";
 import { BuyAgainButton } from "@/components/account/AccountPanels";
 
+export const dynamic = "force-dynamic";
+
 export default async function OrderDetailPage({ params }: { params: Promise<{ reference: string }> }) {
   const { reference } = await params;
   const user = await requireUser();

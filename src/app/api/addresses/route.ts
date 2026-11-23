@@ -5,6 +5,8 @@ import { addresses } from "@/db/schema";
 import { getCurrentUser } from "@/lib/server/auth";
 import { json, str, validateAddress } from "@/lib/validation";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const user = await getCurrentUser();
   if (!user) return json({ error: "Sign in required." }, 401);

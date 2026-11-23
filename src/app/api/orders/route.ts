@@ -9,6 +9,8 @@ import { priceCart } from "@/lib/catalog";
 import { siteConfig } from "@/config/site";
 import type { CartLine } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const user = await getCurrentUser();
   if (!user) return json({ error: "Sign in required." }, 401);

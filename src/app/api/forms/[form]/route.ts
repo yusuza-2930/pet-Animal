@@ -4,6 +4,8 @@ import { contactMessages, newsletterSubscribers } from "@/db/schema";
 import { isEmail, json, str } from "@/lib/validation";
 import { siteConfig } from "@/config/site";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest, ctx: { params: Promise<{ form: string }> }) {
   const { form } = await ctx.params;
   const b = await req.json().catch(() => ({}));

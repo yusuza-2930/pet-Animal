@@ -7,6 +7,8 @@ import { ProfileForm } from "@/components/account/AccountPanels";
 import { formatPrice } from "@/lib/catalog";
 import { Package, PawPrint, MapPin } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function AccountPage() {
   const user = await requireUser();
   const [recent, [{ n: petCount }], [u]] = await Promise.all([

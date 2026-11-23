@@ -5,6 +5,8 @@ import { petProfiles } from "@/db/schema";
 import { getCurrentUser } from "@/lib/server/auth";
 import { json, str } from "@/lib/validation";
 
+export const dynamic = "force-dynamic";
+
 const ANIMALS = ["dog", "cat", "small-pet", "bird"];
 
 export async function GET() {

@@ -4,6 +4,8 @@ import { db } from "@/db";
 import { orders } from "@/db/schema";
 import { json, str } from "@/lib/validation";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   const b = await req.json().catch(() => ({}));
   const reference = str(b.reference, 40).toUpperCase();

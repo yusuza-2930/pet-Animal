@@ -9,6 +9,8 @@ import { formatPrice } from "@/lib/catalog";
 import { EmptyState } from "@/components/ui/misc";
 import { BuyAgainButton } from "@/components/account/AccountPanels";
 
+export const dynamic = "force-dynamic";
+
 export default async function OrdersPage() {
   const user = await requireUser();
   const list = await db.select().from(orders).where(eq(orders.userId, user.id)).orderBy(desc(orders.createdAt));

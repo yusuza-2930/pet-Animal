@@ -8,6 +8,8 @@ import { getProductById, getVariant } from "@/lib/catalog";
 import { siteConfig } from "@/config/site";
 import type { CartLine } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 function sanitizeCart(input: unknown): CartLine[] {
   if (!Array.isArray(input)) return [];
   const map = new Map<string, CartLine>();

@@ -6,6 +6,8 @@ import { createSession, destroySession, getCurrentUser, hashPassword, newToken, 
 import { isEmail, json, str, validatePassword } from "@/lib/validation";
 import { siteConfig } from "@/config/site";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(_req: NextRequest, ctx: { params: Promise<{ action: string }> }) {
   const { action } = await ctx.params;
   if (action !== "me") return json({ error: "Not found" }, 404);

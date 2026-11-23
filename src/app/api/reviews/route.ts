@@ -6,6 +6,8 @@ import { getCurrentUser } from "@/lib/server/auth";
 import { json, str } from "@/lib/validation";
 import { getProductById } from "@/lib/catalog";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   const productId = req.nextUrl.searchParams.get("productId") ?? "";
   const rows = await db
