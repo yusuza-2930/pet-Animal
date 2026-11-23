@@ -7,7 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, BadgeCheck, Headset, RotateCcw, Truck } from "lucide-react";
 import { PawIcon } from "@/components/ui/Logo";
 import { Magnetic } from "@/components/motion/Motion";
-import { SearchAutocomplete } from "@/components/layout/SearchAutocomplete";
 
 const VIDEO_SRC = "https://vibology-ai.github.io/vibology-video-media/Dogs_catching.mp4";
 const POSTER_SRC = "/images/hero-video-poster.jpg";
@@ -18,13 +17,6 @@ const benefits = [
   { icon: Truck, title: "Fast delivery", text: "Dispatched within 48 hours" },
   { icon: RotateCcw, title: "Easy returns", text: "14 days on unused items" },
   { icon: Headset, title: "Friendly support", text: "Real people, real help" },
-];
-
-const chips = [
-  { label: "Dog food", href: "/shop?q=dog+food" },
-  { label: "Cat toys", href: "/shop?animal=cat&category=toys,cat-essentials" },
-  { label: "Grooming", href: "/category/grooming" },
-  { label: "Beds", href: "/shop?q=bed" },
 ];
 
 function formatTime(seconds: number): string {
@@ -67,7 +59,7 @@ export function Hero() {
       if (video.currentTime === 0 && targetTime === 0) {
         try {
           video.currentTime = 0.001;
-        } catch {}
+        } catch { }
       }
       ScrollTrigger.refresh();
     };
@@ -80,7 +72,7 @@ export function Hero() {
       video.addEventListener("canplay", handleVideoReady, { once: true });
       try {
         video.load();
-      } catch {}
+      } catch { }
     }
 
     // Video error fallback
@@ -97,7 +89,7 @@ export function Hero() {
         if (diff > 0.02 && !video.seeking) {
           try {
             video.currentTime = targetTime;
-          } catch {}
+          } catch { }
         }
       }
       rafId = requestAnimationFrame(renderLoop);
@@ -144,13 +136,13 @@ export function Hero() {
           const dur = video.duration && !isNaN(video.duration) && video.duration > 0 ? video.duration : currentDur;
           targetTime = Math.max(0, dur - 0.001);
           if (video && !video.seeking) {
-            try { video.currentTime = targetTime; } catch {}
+            try { video.currentTime = targetTime; } catch { }
           }
         },
         onLeaveBack: () => {
           targetTime = 0.001;
           if (video && !video.seeking) {
-            try { video.currentTime = 0.001; } catch {}
+            try { video.currentTime = 0.001; } catch { }
           }
         },
       });
@@ -262,9 +254,9 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Main Foreground Content (Layer 20) */}
-        <div className="container-site relative z-20 flex flex-1 flex-col justify-center pt-20 pb-8 sm:pt-24 sm:pb-12 lg:pt-20">
-          <div className="max-w-2xl">
+        {/* Main Foreground Content: Left-Aligned Headline matching Image 2 (Layer 20) */}
+        <div className="container-site relative z-20 flex flex-1 flex-col justify-start pt-4 sm:pt-8 lg:justify-center lg:pt-8 pb-24 lg:pb-28">
+          <div className="max-w-xl lg:max-w-2xl">
             {/* Eyebrow Badge */}
             <p
               data-hero-item
@@ -278,55 +270,49 @@ export function Hero() {
             <h1
               id="hero-title"
               data-hero-item
-              className="mt-5 font-display text-[clamp(2.2rem,1.4rem+3.4vw,4.2rem)] leading-[1.04] font-extrabold tracking-[-0.025em] text-white drop-shadow-sm"
+              className="mt-3.5 sm:mt-5 font-display text-[clamp(2rem,1.2rem+2.6vw,3.6rem)] font-extrabold leading-[1.08] tracking-[-0.025em] text-white drop-shadow-sm"
             >
-              Everything Your Pet Needs to <span className="text-coral">Feel Loved.</span>
+              <span className="block whitespace-nowrap">Everything Your Pet</span>
+              <span className="block">Needs to</span>
+              <span className="relative inline-block text-coral">
+                Feel Loved.
+                {/* Decorative curved underline swoosh matching Image 2 */}
+                <svg
+                  className="absolute -bottom-2 left-0 w-full text-coral overflow-visible pointer-events-none"
+                  viewBox="0 0 240 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden
+                >
+                  <path
+                    d="M3 13 C 65 3, 175 3, 237 11"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
             </h1>
+          </div>
+        </div>
 
-            {/* Subheading / Description */}
-            <p
-              data-hero-item
-              className="mt-4 max-w-lg text-[15px] leading-relaxed text-white/85 drop-shadow-sm sm:text-[17px]"
-            >
-              Thoughtfully selected food, toys, accessories, and everyday essentials for happier, healthier pets.
-            </p>
-
-            {/* Action Buttons */}
-            <div data-hero-item className="mt-6 flex flex-wrap gap-3">
-              <Magnetic>
-                <Link
-                  href="/shop?sort=popularity"
-                  className="btn-coral min-h-13 px-7 text-[15px] shadow-lift active:scale-95 transition-all duration-200"
-                >
-                  Shop Bestsellers <ArrowRight className="size-4" aria-hidden />
-                </Link>
-              </Magnetic>
+        {/* CTA Buttons: Centered Directly Beneath the Dog matching Image 2 (Layer 20) */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-36 sm:bottom-24 lg:bottom-24 z-20 flex justify-center px-4">
+          <div data-hero-item className="pointer-events-auto flex flex-row items-center justify-center gap-3 sm:gap-4">
+            <Magnetic>
               <Link
-                href="#collections"
-                className="btn min-h-13 border border-white/25 bg-white/15 px-7 text-[15px] text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-slate active:scale-95"
+                href="/shop?sort=popularity"
+                className="btn-coral min-h-12 px-6 sm:px-8 sm:min-h-13 text-[14px] sm:text-[15px] font-semibold shadow-lift active:scale-95 transition-all duration-200 whitespace-nowrap"
               >
-                Explore Collections
+                Shop Bestsellers <ArrowRight className="size-4" aria-hidden />
               </Link>
-            </div>
-
-            {/* Live Autocomplete Search Input */}
-            <div data-hero-item className="mt-6 max-w-lg">
-              <SearchAutocomplete variant="hero" label="Search the store" />
-            </div>
-
-            {/* Popular Category Chips */}
-            <div data-hero-item className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-[12px] font-semibold text-white/80">Popular:</span>
-              {chips.map((c) => (
-                <Link
-                  key={c.label}
-                  href={c.href}
-                  className="chip min-h-8 border-white/20 bg-white/15 text-[12px] text-white backdrop-blur-sm transition-colors hover:border-white hover:bg-white hover:text-slate"
-                >
-                  {c.label}
-                </Link>
-              ))}
-            </div>
+            </Magnetic>
+            <Link
+              href="#collections"
+              className="btn min-h-12 border border-white/40 bg-white/15 px-6 sm:px-8 sm:min-h-13 text-[14px] sm:text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white hover:text-slate active:scale-95 shadow-soft whitespace-nowrap"
+            >
+              Explore Collections
+            </Link>
           </div>
         </div>
 
@@ -370,22 +356,6 @@ export function Hero() {
               </li>
             ))}
           </ul>
-        </div>
-
-        {/* Scroll To Control Video Hint (Layer 20 - Fades out near end of scrub) */}
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-4 z-20 hidden justify-center transition-opacity duration-300 xl:flex"
-          style={{ opacity: progress > 0.88 ? 0 : 1 }}
-          aria-hidden
-        >
-          <div className="flex flex-col items-center gap-1.5 animate-bounce">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white/70 uppercase drop-shadow-sm">
-              Scroll to play video
-            </span>
-            <span className="flex h-7 w-4 justify-center rounded-full border border-white/50 pt-1 shadow-sm backdrop-blur-xs">
-              <span className="size-1 animate-scroll-dot rounded-full bg-coral" />
-            </span>
-          </div>
         </div>
       </div>
     </section>

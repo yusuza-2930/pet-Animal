@@ -26,7 +26,6 @@ export function SearchAutocomplete({ variant = "header", autoFocus, onNavigate, 
     document.addEventListener("pointerdown", close);
     return () => document.removeEventListener("pointerdown", close);
   }, []);
-  useEffect(() => setActive(-1), [q]);
 
   const go = (href: string) => { setOpen(false); setQ(""); onNavigate?.(); router.push(href); };
   const submit = () => {
@@ -43,7 +42,7 @@ export function SearchAutocomplete({ variant = "header", autoFocus, onNavigate, 
   };
 
   const styles = {
-    header: "h-11 bg-pale border-transparent focus-within:bg-white focus-within:border-slate/30",
+    header: "h-11 bg-white/25 border-white/35 backdrop-blur-md focus-within:bg-white/45 focus-within:border-white/60 text-slate-800 shadow-inner/5",
     hero: "h-14 bg-white border-white shadow-soft focus-within:border-slate/30",
     sheet: "h-12 bg-pale border-transparent focus-within:bg-white focus-within:border-slate/30",
   }[variant];
@@ -53,7 +52,7 @@ export function SearchAutocomplete({ variant = "header", autoFocus, onNavigate, 
     <div ref={wrap} className="relative w-full">
       <form role="search" onSubmit={(e) => { e.preventDefault(); submit(); }} className={`flex items-center gap-2 rounded-full border pr-1.5 pl-4 transition-colors ${styles}`}>
         <label htmlFor={`${id}-input`} className="sr-only">{label}</label>
-        <Search className="size-[18px] shrink-0 text-muted" aria-hidden />
+        <Search className="size-[18px] shrink-0 text-slate-700/80" aria-hidden />
         <input
           ref={input}
           id={`${id}-input`}
@@ -66,11 +65,11 @@ export function SearchAutocomplete({ variant = "header", autoFocus, onNavigate, 
           autoComplete="off"
           autoFocus={autoFocus}
           value={q}
-          onChange={(e) => { setQ(e.target.value); setOpen(true); }}
+          onChange={(e) => { setQ(e.target.value); setActive(-1); setOpen(true); }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKey}
           placeholder="Search food, toys, accessories, and more..."
-          className="min-w-0 flex-1 bg-transparent text-[14px] text-ink outline-none placeholder:text-muted/80 [&::-webkit-search-cancel-button]:hidden"
+          className="min-w-0 flex-1 bg-transparent text-[14px] text-slate-800 outline-none placeholder:text-slate-600/75 [&::-webkit-search-cancel-button]:hidden"
         />
         {q && (
           <button type="button" onClick={() => { setQ(""); input.current?.focus(); }} className="grid size-8 place-items-center rounded-full text-muted hover:bg-black/5" aria-label="Clear search">

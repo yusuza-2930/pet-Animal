@@ -12,6 +12,8 @@ import { SearchAutocomplete } from "./SearchAutocomplete";
 import { CartDrawer } from "./CartDrawer";
 
 export function AnnouncementBar() {
+  const pathname = usePathname();
+  if (pathname === "/") return null;
   const a = siteConfig.announcement;
   return (
     <div className="bg-slate text-white">
@@ -75,6 +77,8 @@ function NavLinks({ onNavigate, mobile }: { onNavigate?: () => void; mobile?: bo
 }
 
 export function SiteHeader() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const { totals, wishlist, hydrated, user, setCartOpen } = useStore();
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -92,9 +96,19 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className={`sticky top-0 z-40 transition-[background-color,box-shadow] duration-300 ${scrolled ? "bg-white/92 shadow-soft backdrop-blur-xl" : "bg-white"}`}>
+      <header
+        className={`sticky top-0 z-40 transition-all duration-300 ${
+          isHome
+            ? scrolled
+              ? "rounded-b-[24px] border-b border-x border-slate-900/10 bg-white/85 shadow-soft backdrop-blur-2xl"
+              : "rounded-b-[24px] border-b border-x border-white/35 bg-white/20 shadow-sm backdrop-blur-xl"
+            : scrolled
+              ? "border-b border-slate-900/10 bg-white/92 shadow-soft backdrop-blur-xl"
+              : "border-b border-line/60 bg-white"
+        }`}
+      >
         <div className="container-site flex h-[68px] items-center gap-3 lg:h-[76px] lg:gap-8">
-          <button type="button" onClick={() => setMenu(true)} className="-ml-2 grid size-11 place-items-center rounded-full text-slate hover:bg-pale lg:hidden" aria-label="Open menu">
+          <button type="button" onClick={() => setMenu(true)} className="-ml-2 grid size-11 place-items-center rounded-full text-slate hover:bg-white/20 lg:hidden" aria-label="Open menu">
             <Menu className="size-[22px]" />
           </button>
           <Logo />
@@ -110,11 +124,13 @@ export function SiteHeader() {
             <IconLink label="Open cart" count={cartCount} cartTarget icon={<ShoppingBag className="size-[21px]" />} onClick={() => setCartOpen(true)} />
           </div>
         </div>
-        <nav aria-label="Primary" className={`hidden border-t border-line/70 lg:block ${scrolled ? "lg:hidden" : ""}`}>
-          <ul className="container-site flex items-center justify-center gap-7">
-            <Suspense fallback={null}><NavLinks /></Suspense>
-          </ul>
-        </nav>
+        {!isHome && (
+          <nav aria-label="Primary" className={`hidden border-t border-line/70 lg:block ${scrolled ? "lg:hidden" : ""}`}>
+            <ul className="container-site flex items-center justify-center gap-7">
+              <Suspense fallback={null}><NavLinks /></Suspense>
+            </ul>
+          </nav>
+        )}
       </header>
 
       <Drawer open={menu} onClose={() => setMenu(false)} title="Menu" side="left">
